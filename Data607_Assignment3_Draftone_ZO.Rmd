@@ -1,0 +1,254 @@
+---
+title: "Data607-Assignment3_Z.O"
+author: "Zainab.O"
+date: "2023-09-16"
+output: html_document
+Introduction:
+  I do know the objective of this week
+  This week is about character strings and dates, speifically manipulating R character and date processing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Question 1 
+College Major 
+- #1. Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset [https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that identifies the majors that contain either "DATA" or "STATISTICS"
+
+#Read and upload the csv file of the college major list
+```{r}
+collegemajors = read.csv( "https://raw.githubusercontent.com/fivethirtyeight/data/2d2ff3e9457549d51f8e571c52099bfe9b2017ad/college-majors/majors-list.csv")
+```
+
+Now select for majors with Data or STATISTICS
+```{r}
+grep(pattern = "DATA|STATISTICS", collegemajors$Major, value= TRUE )
+```
+
+Question 2
+#2 Write code that transforms the data below:
+#[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+#[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+#[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+#[13] "olive"        "salal berry"
+#Into a format like this:
+#c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry", "cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee", "mulberry", "olive", "salal berry")
+
+```{r}
+library(dplyr)
+library(tidyverse)
+
+```
+
+
+```{r}
+fruit = c(
+'[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+[13] "olive"        "salal berry" ' )
+```
+
+VIEW
+```{r}
+fruit
+```
+
+#NEED TO REMOVE [1] [5] [9] [13 and the \]
+
+```{r}
+library(stringr)
+```
+
+
+```{r}
+newfruitv1= str_remove_all(string=fruit, pattern="\"")
+```
+
+```{r}
+newfruitv1= str_remove_all(string=fruit, pattern="[1]")
+```
+
+
+```{r}
+fruit
+```
+
+```{r}
+fruit3 = gsub('\"', '', fruit, fixed=TRUE)
+fruit3
+```
+
+#getting ride of number5,9,13 and 1 one-by-one
+```{r}
+fruit3 = gsub('\n[5]', "", fruit3, fixed=TRUE)
+fruit3
+```
+
+```{r}
+fruit3 = gsub('\n[9]', "", fruit3, fixed=TRUE)
+fruit3
+```
+
+```{r}
+fruit3 = gsub('\n[13]', "", fruit3, fixed=TRUE)
+fruit3
+```
+
+
+
+#I want to get ride of  backslash and numbers in less moves than what it took to mke fruit3
+```{r}
+fruit2 = gsub("[^A-Za-z0-9]", ".", fruit)
+fruit2
+```
+
+```{r}
+fruit2 = gsub('[0-9]+', '', fruit2)
+fruit2
+```
+
+FOUND THE PATTERN
+```{r}
+str_view_all(fruit2,"\\W")
+```
+#THANKKKKKK YOU JESUS
+
+#Trying to figure out how to replace all the noncharcter white space with " " and not get backslah
+
+```{r}
+fruits2update = str_replace_all(fruit2,"\\W", ' "')
+fruits2update
+
+```
+```{r}
+fruits2update = str_replace_all(fruit2,"\\W",  " '")
+fruits2update
+```
+# Okay, I'm going to go back to the orginal and leave as it for my answer 2
+
+```{r}
+fruits2update = str_remove(fruit2,"\\W")
+fruits2update
+```
+
+```{r}
+#fruits2update = str_remove_all(fruit2,".")
+#fruits2update
+```
+
+#OPPPPPS
+#Go BACK to fruit2 as answer
+```{r}
+fruit2
+```
+
+
+
+```{r}
+fruit_list = as.list(fruit2)
+fruit_list
+```
+
+
+
+```{r}
+fruit5 = gsub("\\\\", " ",fruit)
+fruit5
+```
+
+```{r}
+```
+
+Question 3
+
+
+#3 Describe, in words, what these expressions will match:
+#(.)\1\1
+#"(.)(.)\\2\\1"
+#(..)\1
+#"(.).\\1.\\1"
+#"(.)(.)(.).*\\3\\2\\1"
+
+Testing string
+```{r}
+input_string = "abc"
+matches = str_extract_all(input_string,"(.)\1\1")
+matches
+```
+```{r}
+strings= c("aaa", "111", "&&&", "abb", "abccba", "xyz", "xyyzz", "(.)\\1\\1")
+matches2= str_extract_all(strings, "(.)\\1\\1" )
+matches2
+```
+
+```{r}
+strings3 = c("abba", "cccc","chhc","papa","paap","coco","church","yaya","yaay")
+matches3 = str_extract_all(strings3, "(.)(.)\\2\\1")
+matches3
+```
+
+```{r}
+string4 = c("abba", "cccc","chhc","papa","paap","coco","church","yaya","yaay","dada","dadaegeg","dadadada","abaa","aaaabbbb", "a1a1")
+matches4 = str_extract_all(string4, "(..)\\1")
+matches4
+                           
+```
+The answer:
+The answer to each part follows.
+
+1)(.)\1\1: The same character appearing three times in a row. E.g. "aaa"
+2)"(.)(.)\\2\\1": A pair of characters followed by the same pair of characters in reversed order. E.g. "abba".
+3)(..)\1: Any two characters repeated. E.g. "a1a1".
+4)"(.).\\1.\\1": A character followed by any character, the original character, any other character, the original character again. E.g. "abaca", "b8b.b".
+5)"(.)(.)(.).*\\3\\2\\1" Three characters followed by zero or more characters of any kind followed by the same three characters but in reverse order. E.g. "abcsgasgddsadgsdgcba" or "abccba" or "abc1cba".
+
+
+Question 4
+
+#Construct regular expressions to match words that:
+#Start and end with the same character.
+#Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+#Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+
+```{r}
+Q_list= list("dad","eye","london","papa","arm","newyork","arizona","church","tomato","baba","tio","rawr","mom","wow","pop","fun", "encourage", "remember", "noon","sense","banana","octogon","habibi","kefir","genes","economic")
+```
+
+```{r}
+Q_list
+```
+Answer 1
+```{r}
+str_view(string = Q_list, pattern = "^(.)((.*\\1$)|\\1?$)" )
+```
+Answer Question4_2
+```{r}
+str_subset(Q_list, "([A-Za-z][A-Za-z]).*\\1")
+```
+AnswerQuestion4_3
+```{r}
+str_subset(Q_list, "([a-z]).*\\1.*\\1")
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
