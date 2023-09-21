@@ -1,0 +1,116 @@
+---
+title: "practicing Project one_data607"
+author: "Zainab.O"
+date: "2023-09-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+DOWNLOAD PACKAGES I THINK I MIGHT NEED
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+```
+
+
+
+```{r}
+dfTournament = read_csv("tournamentinfo.csv")
+```
+
+```{r}
+head(dfTournament)
+```
+
+```{r}
+tail(dfTournament)
+```
+
+```{r}
+spec(dfTournament)
+```
+Trying to confirm the location of the dashes
+#
+```{r}
+length(dfTournament)
+```
+#Trying to confirm that the dashes are in every 3rd row
+```{r}
+dfTournament %>%
+  filter(row_number() %% 3 == 1)
+```
+# Well I thought it would filter to select every third row but instead it selecting every 3rd row after the 1st row which is where it says Pair|Player Name|Total |Round etc etc 
+
+#Let's investigate this
+```{r}
+dfTournament %>%
+  filter(row_number() %% 3 == 2)
+```
+# Okay so above it selected every 3rd row after the second rowß/
+
+
+#Okay This is the step,
+# I am going to make 2 matrices, one with the names and the total points
+#The second matrice is going have the state of residency and Player's prerating
+#I need to create a column for the Average Chess and a column for the number of games played.
+#This can go two way, I can either count it up and create columns myself. Append column to final data frame Less stressful
+#2nd way is for me to filter trough the first matrice, speficially in the lasy 7 columns for the , counting how many times a # appears = total num of games played
+
+Make 2 matrices
+```{r}
+matrix1 = dfTournament %>%
+  filter(row_number() %% 3 == 1)
+matrix1  
+```
+
+```{r}
+matrix2 = dfTournament %>%
+  filter(row_number() %% 3 == 2)
+matrix2 
+```
+
+```{r}
+colnames(matrix1) = c("columnone")
+```
+
+```{r}
+matrix1 = matrix1 %>%
+  separate(columnone,c('Pair','Player Name','Total','Round','Round','Round','Round','Round','Round','Round|'))
+matrix1
+```
+```{r}
+matrix1
+```
+
+```{r}
+matrix1[c('Pair', 'Player Name','Total','Round','Round','Round','Round','Round','Round','Round')] = str_split_fixed(matrix1$columnone, ' ', 10)
+```
+
+```{r}
+matrix1
+```
+#So I saw the chart, I need to delete the '|' and re-read the 
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
