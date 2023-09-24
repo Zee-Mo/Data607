@@ -1,0 +1,141 @@
+---
+title: "Project_One_Draft3"
+author: "Zainab.O"
+date: "2023-09-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stringr)
+library(readr)
+library(tidyverse)
+library(dplyr)
+```
+
+
+```{r}
+dfTournament = read_csv("tournamentinfo.csv", show_col_types = FALSE)
+```
+
+```{r}
+head(dfTournament)
+```
+
+```{r}
+tail(dfTournament)
+```
+```{r}
+dfTournament
+```
+
+
+```{r}
+dfTournament
+```
+
+
+```{r}
+
+x3 = unname(str_locate_all(pattern = '\\|', dfTournament[1]))
+x3
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+mTournament = matrix(unlist(dfTournament), byrow=TRUE)
+
+matrix2 = mTournament[seq(5,length(mTournament),3)]
+head(matrix2)
+```
+```{r}
+matrix2
+```
+
+
+```{r}
+matrix1 <- mTournament[seq(4,length(mTournament),3)]
+head(matrix1)
+```
+```{r}
+matrix1
+```
+
+
+```{r}
+# matching first numbers
+ID <- as.numeric(str_extract(matrix1, '\\d+'))
+
+# matching the first combination of a letter, any amount of characters and "|"
+Name <- str_extract(matrix1, '[A-z].{1,32}') 
+
+# extracting the name
+Name <- str_trim(str_extract(Name, '.+\\s{2,}'))
+
+# matching the first two letters (state) in the second matrix 
+State <- str_extract(matrix2, '[A-Z]{2}') 
+
+# matching at least 1 number, a period, and 1 number
+TotalNumberofPoints <- as.numeric(str_extract(matrix1, '\\d+\\.\\d'))
+
+# matching the combination of "R", any characters and "-"
+PreRating <- str_extract(matrix2, 'R:.{8,}-')
+
+# matching first 4 numbers
+PreRating <- as.numeric(str_extract(PreRating, '\\d{1,4}'))
+
+# matching all combinations of 1 letter 2 spaces and any numbers
+Rounds <- str_extract_all(matrix1, '[A-Z]\\s{2,}\\d+')
+
+# matching numbers
+Rounds <- str_extract_all(Rounds, '\\d+')
+```
+
+Calculating Average Pre Chess
+```{r}
+AvgOppPreChessRating <- c()
+
+for(i in c(1:length(Rounds))){
+  AvgOppPreChessRating[i] <- round(mean(PreRating[as.numeric(Rounds[[i]])]),0)
+}
+AvgOppPreChessRating
+```
+
+
+FINAL DATAFRAME
+```{r}
+FINALCHESSPIECE = data.frame(ID,Name,State,TotalNumberofPoints,PreRating,AvgOppPreChessRating)
+
+head(FINALCHESSPIECE)
+```
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
