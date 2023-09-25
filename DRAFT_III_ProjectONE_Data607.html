@@ -1733,9 +1733,9 @@ library(tidyverse)</code></pre>
 ## [1298,] 17666 17666
 ## [1299,] 17672 17672
 ## [1300,] 17678 17678</code></pre>
-<pre class="r"><code>mTournament = matrix(unlist(dfTournament), byrow=TRUE)
+<pre class="r"><code>list_Tournament = matrix(unlist(dfTournament), byrow=TRUE)
 
-matrix2 = mTournament[seq(5,length(mTournament),3)]
+matrix2 = list_Tournament[seq(5,length(list_Tournament),3)]
 head(matrix2)</code></pre>
 <pre><code>## [1] &quot;ON | 15445895 / R: 1794   -&gt;1817     |N:2  |W    |B    |W    |B    |W    |B    |W    |&quot;
 ## [2] &quot;MI | 14598900 / R: 1553   -&gt;1663     |N:2  |B    |W    |B    |W    |B    |W    |B    |&quot;
@@ -1808,7 +1808,7 @@ head(matrix2)</code></pre>
 ## [62] &quot;MI | 15219542 / R: 1530   -&gt;1535     |     |B    |     |     |     |     |     |     |&quot;
 ## [63] &quot;MI | 15057092 / R: 1175   -&gt;1125     |     |W    |B    |W    |B    |B    |     |     |&quot;
 ## [64] &quot;MI | 15006561 / R: 1163   -&gt;1112     |     |B    |W    |W    |B    |W    |B    |B    |&quot;</code></pre>
-<pre class="r"><code>matrix1 &lt;- mTournament[seq(4,length(mTournament),3)]
+<pre class="r"><code>matrix1 &lt;- list_Tournament[seq(4,length(list_Tournament),3)]
 head(matrix1)</code></pre>
 <pre><code>## [1] &quot;1 | GARY HUA                        |6.0  |W  39|W  21|W  18|W  14|W   7|D  12|D   4|&quot;
 ## [2] &quot;2 | DAKSHESH DARURI                 |6.0  |W  63|W  58|L   4|W  17|W  16|W  20|W   7|&quot;
