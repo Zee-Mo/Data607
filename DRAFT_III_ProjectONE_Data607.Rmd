@@ -52,9 +52,9 @@ x3
 
 
 ```{r}
-mTournament = matrix(unlist(dfTournament), byrow=TRUE)
+list_Tournament = matrix(unlist(dfTournament), byrow=TRUE)
 
-matrix2 = mTournament[seq(5,length(mTournament),3)]
+matrix2 = list_Tournament[seq(5,length(list_Tournament),3)]
 head(matrix2)
 ```
 ```{r}
@@ -63,7 +63,7 @@ matrix2
 
 
 ```{r}
-matrix1 <- mTournament[seq(4,length(mTournament),3)]
+matrix1 <- list_Tournament[seq(4,length(list_Tournament),3)]
 head(matrix1)
 ```
 ```{r}
