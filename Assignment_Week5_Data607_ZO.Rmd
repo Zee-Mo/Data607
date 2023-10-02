@@ -1,0 +1,377 @@
+---
+title: "Data_607_assignment_week5"
+author: "Zainab.O"
+date: "2023-09-28"
+output: html_document
+---
+#THE GOAL IS TO:
+#(1) Create a .CSV file (or optionally, a MySQL database!) that includes all of the information above.
+#You’re encouraged to use a “wide” structure similar to how the information appears above, so
+#that you can practice tidying and transformations as described below.
+#(2) Read the information from your .CSV file into R, and use tidyr and dplyr as needed to tidy
+#and transform your data.
+#(3) Perform analysis to compare the arrival delays for the two airlines.
+#(4) Your code should be in an R Markdown file, posted to rpubs.com, and should include narrative
+#descriptions of your data cleanup work, analysis, and conclusions. Please include in your
+#homework submission:
+# The URL to the .Rmd file in your GitHub repository. and
+# The URL for your rpubs.com web page.
+
+MY PLAN:
+
+1) Find the total number of flights for ALASKA and for AM WEST
+1) Figure out the percent of aM Flights that are delayed vs On time for both airlines
+1) Then combine data and get the mean,stv_dev, median for the Number of planes that were delayed and on time in total and for gene destination. Then compare where the 
+
+A) get the number of rows by the noukbers of column
+Use head() to view the first 5 rows
+Use tails to view the last 5 rows
+Use columns to return the names of your columns
+
+B)IF this was python you would use describe to summarizes the count, mean 
+Standard dev and min and max for the numeric variables
+
+C)Look for discrepancies
+ Min vs max, mean vs median, wide or small std dev
+
+
+Indenitfy unique values in both columns and rows
+D)CLEANING YOUR DATASET
+- Remove redundant variables
+- Remove Variable selection
+- Remove outliers
+
+
+PACKAGES
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(stats)
+
+```
+
+
+READ IN DATA
+```{r}
+flightinfo = read_csv("flightinfo_Data607_copy.csv")
+```
+```{r}
+head(flightinfo)
+```
+
+
+
+```{r}
+head(flightinfo)
+```
+
+
+
+GET THE NUMBER THE NUMBER OF COLMUNS
+#I have 8 columuns and 6 rows
+
+
+##I just realized I can not summarize Delayed by Airlines beacuse it its in a fdifferent lines
+
+
+
+DESCRIBE/SUMMMARIES THE DATA
+
+#SHORTCUT, I NEED TO LABLED THE ROW
+
+```{r}
+rownames(flightinfo) = (LETTERS[1:7] )
+```
+
+```{r}
+flightinfo
+```
+#apparently tibble can not have custom names.We are still going to try. If I can't change the row name, then I will have to convert df to a dataframe using as.data.frame
+
+# We re going to chnage Specific row names; modified them by specifying the index of the row we wish to modify and then assigning it to a new object value. 
+
+```{r}
+row.names(flightinfo) [2] = "Destination"
+```
+
+```{r}
+flightinfo
+```
+
+```{r}
+flight311 = as.data.frame(flightinfo)
+```
+
+```{r}
+flight311
+```
+
+```{r}
+row.names(flight311) [2] = "Destination"
+```
+
+```{r}
+flight311
+```
+```{r}
+#row.names(flight311) [3] = "ALASKA Airline"
+#row.names(flight311) [4] = "ALASKA Airline"
+#row.names(flight311) [6] = "AM WEST Airline"
+#row.names(flight311) [7] = "AM WEST Airline"
+```
+didn't work
+
+
+```{r}
+flight311 = as.data.frame(t(flight311))
+```
+
+```{r}
+flight311
+```
+
+```{r}
+colnames(flight311)[4] = "ALASKA Airline"
+```
+
+```{r}
+flight311
+```
+
+```{r}
+colnames(flight311)[6] = "AM WEST Airline"
+colnames(flight311)[7] = "AM WEST Airline"
+row.names(flight311)[3] = "Scheduled Gate arrival"
+```
+
+```{r}
+flight311
+```
+```{r}
+colnames(flight311)[3] = "ALASKA Airline_ONTIME"
+colnames(flight311)[4] = "ALASKA Airline_DELAY"
+colnames(flight311)[6] = "AM WEST Airline_ONTIME"
+colnames(flight311)[7] = "AM WEST Airline_DELAY"
+```
+
+```{r}
+rownames(flight311) = c(1:8)
+```
+
+
+# I may have to create 2 different dataframes
+```{r}
+flight311
+```
+
+```{r}
+flight311 = flight311[-1,]
+```
+
+```{r}
+
+```
+
+
+#I need to make a Carrier Columns and put the airlines under that and double the Destinations
+#first let's see if I can find speific data
+
+```{r}
+ALASKAflights=flight311[,c(2,3,4)]
+ALASKAflights
+```
+
+```{r}
+AMWESTflights=flight311[,c(2,6,7)]
+AMWESTflights
+```
+```{r}
+#df3 = rbind.data.frame(AMWESTflights,ALASKAflights)
+```
+#I am trying to create a data frame that basically have a column with that has 1) ontime arrivals, #2)delays arrivals, , 3) carrier ( says AMWEST or ALASKA) 4) DESINTATIONS and match 
+# SO right here I am imaging that I am trying to combined AM WEST FLIGHTS on top of ALASKA. I imagine each destination would pop up twice correlating the correct ontime flights and delays flights for each respective airline to its respective destination
+ 
+ 
+# HERE I have to match the names of the colmuns in order for them to bind
+
+```{r}
+AMWESTflights$CARRIER = c("AM WEST","AM WEST","AM WEST","AM WEST","AM WEST","AM WEST","")
+AMWESTflights
+```
+
+```{r}
+ALASKAflights$CARRIER = c("ALASKA","ALASKA","ALASKA","ALASKA","ALASKA","ALASKA","")
+ALASKAflights
+```
+```{r}
+colnames(ALASKAflights)[2] = "ARRIVALS_ONTIME"
+colnames(ALASKAflights)[3] = "ARRIVAL_DELAY"
+ALASKAflights
+colnames(AMWESTflights)[2] = "ARRIVALS_ONTIME"
+colnames(AMWESTflights)[3] = "ARRIVAL_DELAY"
+AMWESTflights
+```
+
+
+#Try rbind again
+
+```{r}
+df3 = rbind.data.frame(AMWESTflights,ALASKAflights)
+df3
+```
+
+```{r}
+df3[c(1,7),]
+```
+
+#Ok I just checked the rows I need to take out
+```{r}
+df3[-c(1,7),]
+```
+
+```{r}
+df4 = df3[-c(1,7),]
+df4
+```
+
+```{r}
+print(sapply(df4,class))
+```
+
+```{r}
+#transform(df4$ARRIVALS_ONTIME)= as.numeric(df4$ARRIVALS_ONTIME)
+```
+```{r}
+#df4
+```
+
+```{r}
+#install.packages("skimr")
+
+```
+```{r}
+library(skimr)
+```
+
+
+```{r}
+skim(df4)
+```
+```{r}
+skim(df4$ARRIVALS_ONTIME)
+```
+
+```{r}
+skim(df4$ARRIVAL_DELAY)
+```
+```{r}
+df4
+```
+```{r}
+df5 = df3[-c(1,7),]
+df5
+```
+```{r}
+skim(df5)
+```
+```{r}
+skim(df5$ARRIVALS_ONTIME)
+```
+
+```{r}
+df5[,c(2,3)] = sapply(df5[,c(2,3)], as.numeric)
+```
+
+```{r}
+df5
+```
+```{r}
+summary(df5$ARRIVALS_ONTIME)
+```
+
+```{r}
+summary(df5$ARRIVAL_DELAY)
+```
+
+
+Q- get a summary per airline? and/or per place
+
+```{r}
+df5 %>%
+  group_by(df5$ARRIVAL_DELAY) %>%
+  summarize( mean_a= mean(df5$ARRIVAL_DELAY,
+                          sum_a = sum(df5$ARRIVAL_DELAY)
+                        ))
+ 
+
+  
+
+```
+
+```{r}
+df5 %>% 
+  group_by(df5$ARRIVAL_DELAY,df5$CARRIER) %>%
+  summarize()
+
+```
+
+```{r}
+skim(df5)
+```
+
+```{r}
+df5 %>%
+  group_by(CARRIER)
+
+```
+```{r}
+df5 %>%
+  group_by(CARRIER) %>%
+  group_by(ARRIVAL_DELAY) %>%
+  summarize( mean = mean(df5$ARRIVAL_DELAY), max = max(df5$ARRIVAL_DELAY), std = sd(df5$ARRIVAL_DELAY)) 
+
+
+```
+
+
+CLEAN UP DATA
+
+ANAYLYZE RELATIONSHIP BETWEEN VARIABLEs
+- scatterplot
+= correlation matrix
+- histogram
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Create the csv on excel
+
+#DOWNLOAD PACKAGES
+
+#Read in the data
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
