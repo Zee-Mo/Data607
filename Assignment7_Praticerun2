@@ -29,30 +29,26 @@ td, th {
     <th>Publication year</th>
     <th>Goodreads rating</th>
   </tr>
-  <tr>
+    <tr>
     <td> 1 </td>
-    <td> 2 </td>
-    <td> 3 </td>
-  </tr>
-    <tr>
     <td>Weaverbird</td>
-    <td>Merry Sexy Christmas</td>
-    <td>Sula</td>
-  </tr>
-    <tr>
     <td>Ayọ̀bámi Adébáyọ̀</td>
-    <td>Beverly Jenkins</td>
-    <td>Toni Morrison</td>
-  </tr>
-    <tr>
     <td>Ayodele Arigbabu</td>
-    <td>Kayla Perrin</td>
-    <td> </td>
+    <td>Unoma Nguemo Azuah</td>    
   </tr>
     <tr>
-    <td>Unoma Nguemo Azuah</td>
+    <td> 2 </td>
+    <td>Merry Sexy Christmas</td>
+    <td>Beverly Jenkins</td>
+    <td>Kayla Perrin</td> 
     <td>Maureen Smith</td>
-    <td> </td>
+  </tr>
+    <tr>
+     <td> 3 </td>
+     <td>Sula</td>
+     <td>Toni Morrison</td>
+     <td> </td>
+     <td> </td>
   </tr>
 </table>
 
