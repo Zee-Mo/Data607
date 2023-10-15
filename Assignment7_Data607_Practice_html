@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<style>
+table, th, td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Favorite Books</h2>
+
+<table style=”width:100%”>
+  <tr>
+    <th>Book Number</th>
+    <th>Title</th>
+    <th>1ST Author </th>
+    <th>2ND Author </th>
+    <th>3RD Author </th>
+    <th>Subject(s)</th>
+    <th>Publication year</th>
+    <th>Goodreads rating</th>
+  </tr>
+  <tr>
+    <td> 1 </td>
+    <td> 2 </td>
+    <td> 3 </td>
+  </tr>
+    <tr>
+    <td>Weaverbird</td>
+    <td>Merry Sexy Christmas</td>
+    <td>Sula</td>
+  </tr>
+    <tr>
+    <td>Ayọ̀bámi Adébáyọ̀</td>
+    <td>Beverly Jenkins</td>
+    <td>Toni Morrison</td>
+  </tr>
+    <tr>
+    <td>Ayodele Arigbabu</td>
+    <td>Kayla Perrin</td>
+    <td> </td>
+  </tr>
+    <tr>
+    <td>Unoma Nguemo Azuah</td>
+    <td>Maureen Smith</td>
+    <td> </td>
+  </tr>
+</table>
+
+</body>
+</html>
