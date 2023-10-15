@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Favorite Books>
+<FavoriteBooks>
     <Book 1>
         <Book Number>1</Book Number>
         <Title>Weaverbird</Title>
@@ -17,7 +17,7 @@
         <1ST Author>Beverly Jenkins</1ST Author>
         <2ND Author>Kayla Perrin</2ND Author>
         <3RD Author>Maureen Smith</3RD Author>
-        <Subject(s)>Romance,African American Romance, Anthologies,Holiday </Subject(s)t>
+        <Subject(s)>Romance,African American Romance, Anthologies,Holiday </Subject(s)>
         <PublicationYR>2012</PublicationYR>
         <Goodreads rating>4.18</Goodreads rating>
     </Book 2>
@@ -32,4 +32,4 @@
         <Goodreads rating>4.01</Goodreads rating> 
 
     </Book 3>
-</Favorite Books>
+</FavoriteBooks>
