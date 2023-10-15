@@ -1,0 +1,65 @@
+=<!DOCTYPE html>
+<html>
+  <head>
+<style>
+table, th, td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Favorite Books</h2>
+
+<table style=”width:100%”>
+  <tr>
+    <th>Book Number</th>
+    <th>Title</th>
+    <th>1ST Author </th>
+    <th>2ND Author </th>
+    <th>3RD Author </th>
+    <th>Subject(s)</th>
+    <th>Publication year</th>
+    <th>Goodreads rating</th>
+  </tr>
+    <tr>
+    <td> 1 </td>
+    <td>Weaverbird</td>
+    <td>Ayọ̀bámi Adébáyọ̀</td>
+    <td>Ayodele Arigbabu</td>
+    <td>Unoma Nguemo Azuah</td>  
+    <td> Nigeria,Fiction,Anthologies,Challenging,Reflective</td>
+    <td> 2013 </td>
+    <td> 4.00 </td>  
+  </tr>
+    <tr>
+    <td> 2 </td>
+    <td>Merry Sexy Christmas</td>
+    <td>Beverly Jenkins</td>
+    <td>Kayla Perrin</td> 
+    <td>Maureen Smith</td>
+    <td>Romance,African American Romance, Anthologies,Holiday </td>
+    <td> 2012 </td>
+    <td> 4.18</td>
+  </tr>
+    <tr>
+     <td> 3 </td>
+     <td>Sula</td>
+     <td>Toni Morrison</td>
+     <td> </td>
+     <td> </td>
+     <td> Fiction,Classic,Historical Fiction, African American </td>
+     <td> 1973 </td>
+     <td> 4.01 </td>
+  </tr>
+</table>
+
+</body>
+</html>
