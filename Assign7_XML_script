@@ -4,9 +4,9 @@
     <Book1>
         <BookNumber>1</BookNumber>
         <Title>Weaverbird</Title>
-        <1ST_Author>Ayọ̀bámi Adébáyọ̀</1ST_Author>
-        <2ND_Author>Ayodele Arigbabu</2ND_Author>
-        <3RD_Author>Unoma Nguemo Azuah</3RD_Author>
+        <Author1>Ayọ̀bámi Adébáyọ̀</Author1>
+        <Author2>Ayodele Arigbabu</Author2>
+        <Author3>Unoma Nguemo Azuah</Author3>
         <Subject(s)>Nigeria,Fiction,Anthologies,Challenging,Reflective</Subject(s)>
         <PublicationYR>2013</PublicationYR>
         <Goodreads rating>4.00</Goodreads rating>
@@ -14,9 +14,9 @@
     <Book2>
         <BookNumber>2</BookNumber>
         <Title>Merry Sexy Christmas</Title>
-        <1ST_Author>Beverly Jenkins</1STAuthor>
-        <2ND_Author>Kayla Perrin</2ND_Author>
-        <3RD_Author>Maureen Smith</3RD_Author>
+        <Author1>Beverly Jenkins</Author1>
+        <Author2>Kayla Perrin</Author2>
+        <Author3>Maureen Smith</Author3>
         <Subject(s)>Romance,African American Romance, Anthologies,Holiday </Subject(s)>
         <PublicationYR>2012</PublicationYR>
         <Goodreads_rating>4.18</Goodreads_rating>
@@ -24,9 +24,9 @@
     <Book3>
         <BookNumber>3</BookNumber>
         <Title>Sula</Title>
-        <1ST_Author>Toni Morrison</1ST_Author>
-        <2ND_Author> </2ND_Author>
-        <3RD_Author> </3RD_Author>
+        <Author1>Toni Morrison</Author1>
+        <Author2> </Author2>
+        <Author3> </Author3>
         <Subject(s)>Fiction,Classic,Historical Fiction, African American </Subject(s)>
         <PublicationYR>1973</PublicationYR>
         <Goodreads_rating>4.01</Goodreads_rating> 
