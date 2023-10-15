@@ -7,9 +7,9 @@
         <Author1>Ayọ̀bámi Adébáyọ̀</Author1>
         <Author2>Ayodele Arigbabu</Author2>
         <Author3>Unoma Nguemo Azuah</Author3>
-        <Subject(s)>Nigeria,Fiction,Anthologies,Challenging,Reflective</Subject(s)>
+        <Subjects>Nigeria,Fiction,Anthologies,Challenging,Reflective</Subjects>
         <PublicationYR>2013</PublicationYR>
-        <Goodreads rating>4.00</Goodreads rating>
+        <Goodreads_rating>4.00</Goodreads_rating>
     </Book1>
     <Book2>
         <BookNumber>2</BookNumber>
@@ -17,7 +17,7 @@
         <Author1>Beverly Jenkins</Author1>
         <Author2>Kayla Perrin</Author2>
         <Author3>Maureen Smith</Author3>
-        <Subject(s)>Romance,African American Romance, Anthologies,Holiday </Subject(s)>
+        <Subjects>Romance,African American Romance, Anthologies,Holiday </Subjects>
         <PublicationYR>2012</PublicationYR>
         <Goodreads_rating>4.18</Goodreads_rating>
     </Book2>
@@ -27,7 +27,7 @@
         <Author1>Toni Morrison</Author1>
         <Author2> </Author2>
         <Author3> </Author3>
-        <Subject(s)>Fiction,Classic,Historical Fiction, African American </Subject(s)>
+        <Subjects>Fiction,Classic,Historical Fiction, African American </Subjects>
         <PublicationYR>1973</PublicationYR>
         <Goodreads_rating>4.01</Goodreads_rating> 
     </Book3>
