@@ -1,5 +1,46 @@
-{"library":[
-        {"Book Number": 1,"Title": "Weaverbird","Author1": "Ayọ̀bámi Adébáyọ̀","Author2": "Ayodele Arigbabu","Author3": "Unoma Nguemo Azuah", "Subjects": "Nigeria,Fiction,Anthologies,Challenging,Reflective", "PublicationYR": 2013,"Goodreads_rating": 4},
-        {"Book Number": 2,"Title": "Merry Sexy Christmas","Author1": "Beverly Jenkins","Author2": "Ayodele Arigbabu","Author3": "Kayla Perrin","Subjects": "Romance,African American Romance, Anthologies,Holiday", "PublicationYR": 2012, "Goodreads_rating": 4.18},
-        {"Book Number": 3, "Title": "Sula","Author1": "Toni Morrison","Author2": " ","Author3": " ","Subjects": "Fiction,Classic,Historical Fiction, African American","PublicationYR": 1973,"Goodreads_rating": 4.01} 
-]}
+{
+    "library": [
+        {
+            "Book Number": [
+                1,
+                2,
+                3
+            ],
+            "Title": [
+                "Weaverbird",
+                "Merry Sexy Christmas",
+                "Sula"
+            ],
+            "Author1": [
+                "Ayọ̀bámi Adébáyọ̀",
+                "Beverly Jenkins",
+                "Toni Morrison"
+            ],
+            "Author2": [
+                "Ayodele Arigbabu",
+                "Kayla Perrin",
+                " "
+            ],
+            "Author3": [
+                "Unoma Nguemo Azuah",
+                "Maureen Smith",
+                " "
+            ],
+            "Subjects": [
+                "Nigeria,Fiction,Anthologies,Challenging,Reflective",
+                "Romance,African American Romance, Anthologies,Holiday",
+                "Fiction,Classic,Historical Fiction, African American"
+            ],
+            "PublicationYR": [
+                2013,
+                2012,
+                1973
+            ],
+            "Goodreads_rating": [
+                4,
+                4.18,
+                4.01
+            ]
+        }
+    ]
+}
