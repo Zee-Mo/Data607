@@ -1,0 +1,342 @@
+---
+title: "Data607_Assignment7"
+author: "Zainab.O"
+date: "2023-10-15"
+output: html_document
+
+---
+1)Pick 3 Favorite Books
+I selected books from authors I've enjoyed in the past and/or found their works to be literary masterpieces. I had to go outside of my favorites in order to fulfill the requirement that at least one of the books had to have more than one author, hence why I settle for authors I admire or who wrote books I'd like.
+2) TAKE THE INFORMATION THAT YOU"VE SELECTED ABOUT THE # BOOKS AND CREATE THREE SEPARTE FILES IN WHICH TO STORE THE BOOK's INFO IN
+-HTML
+-XML and
+-JSON
+3)Write R code, using your packages of choice, to load the information from each of the three sources into separate R data frames.
+4. Conclusion. Are the three data frames identical?
+
+1)Pick 3 Favorite Books
+- Weaverbird by Nigerian authors :Ayodele Arigbabu, Ayọ̀bámi Adébáyọ̀, Unoma Nguemo Azuah, Khalidah Aderonke
+-  Merry Sexy Christmas by  Beverly Jenkins,Kayla Perrins and Maureen Smith
+- Sula by the ;iterary genuis Toni Morrison
+
+2)These are the handwritten scripts for each format
+HTML
+```
+=<!DOCTYPE html>
+<html>
+  <head>
+<style>
+table, th, td {
+  border: 1px solid #dddddd;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 6px;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Favorite Books</h2>
+
+<table style=”width:100%”>
+  <tr>
+    <th>Book Number</th>
+    <th>Title</th>
+    <th>1ST Author </th>
+    <th>2ND Author </th>
+    <th>3RD Author </th>
+    <th>Subject(s)</th>
+    <th>Publication year</th>
+    <th>Goodreads rating</th>
+  </tr>
+    <tr>
+    <td> 1 </td>
+    <td>Weaverbird</td>
+    <td>Ayọ̀bámi Adébáyọ̀</td>
+    <td>Ayodele Arigbabu</td>
+    <td>Unoma Nguemo Azuah</td>  
+    <td> Nigeria,Fiction,Anthologies,Challenging,Reflective</td>
+    <td> 2013 </td>
+    <td> 4.00 </td>  
+  </tr>
+    <tr>
+    <td> 2 </td>
+    <td>Merry Sexy Christmas</td>
+    <td>Beverly Jenkins</td>
+    <td>Kayla Perrin</td> 
+    <td>Maureen Smith</td>
+    <td>Romance,African American Romance, Anthologies,Holiday </td>
+    <td> 2012 </td>
+    <td> 4.18</td>
+  </tr>
+    <tr>
+     <td> 3 </td>
+     <td>Sula</td>
+     <td>Toni Morrison</td>
+     <td> </td>
+     <td> </td>
+     <td> Fiction,Classic,Historical Fiction, African American </td>
+     <td> 1973 </td>
+     <td> 4.01 </td>
+  </tr>
+</table>
+
+</body>
+</html>
+```
+
+
+XML
+```
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FavoriteBooks>
+    <Book1>
+        <BookNumber>1</BookNumber>
+        <Title>Weaverbird</Title>
+        <Author1>Ayọ̀bámi Adébáyọ̀</Author1>
+        <Author2>Ayodele Arigbabu</Author2>
+        <Author3>Unoma Nguemo Azuah</Author3>
+        <Subjects>Nigeria,Fiction,Anthologies,Challenging,Reflective</Subjects>
+        <PublicationYR>2013</PublicationYR>
+        <Goodreads_rating>4.00</Goodreads_rating>
+    </Book1>
+    <Book2>
+        <BookNumber>2</BookNumber>
+        <Title>Merry Sexy Christmas</Title>
+        <Author1>Beverly Jenkins</Author1>
+        <Author2>Kayla Perrin</Author2>
+        <Author3>Maureen Smith</Author3>
+        <Subjects>Romance,African American Romance, Anthologies,Holiday </Subjects>
+        <PublicationYR>2012</PublicationYR>
+        <Goodreads_rating>4.18</Goodreads_rating>
+    </Book2>
+    <Book3>
+        <BookNumber>3</BookNumber>
+        <Title>Sula</Title>
+        <Author1>Toni Morrison</Author1>
+        <Author2> </Author2>
+        <Author3> </Author3>
+        <Subjects>Fiction,Classic,Historical Fiction, African American </Subjects>
+        <PublicationYR>1973</PublicationYR>
+        <Goodreads_rating>4.01</Goodreads_rating> 
+    </Book3>
+</FavoriteBooks>
+
+```
+
+
+JSON
+-The one that did not work well
+```
+{
+    "library": [
+        {
+            "Book Number": 1,
+            "Title": "Weaverbird",
+            "Author1": "Ayọ̀bámi Adébáyọ̀",
+            "Author2": "Ayodele Arigbabu",
+            "Author3": "Unoma Nguemo Azuah",
+            "Subjects": "Nigeria,Fiction,Anthologies,Challenging,Reflective",
+            "PublicationYR": 2013,
+            "Goodreads_rating": 4
+        },
+        {
+            "Book Number": 2,
+            "Title": "Merry Sexy Christmas",
+            "Author1": "Beverly Jenkins",
+            "Author2": "Ayodele Arigbabu",
+            "Author3": "Kayla Perrin",
+            "Subjects": "Romance,African American Romance, Anthologies,Holiday",
+            "PublicationYR": 2012,
+            "Goodreads_rating": 4.18
+        },
+        {
+            "Book Number": 3,
+            "Title": "Sula",
+            "Author1": "Toni Morrison",
+            "Author2": " ",
+            "Author3": " ",
+            "Subjects": "Fiction,Classic,Historical Fiction, African American",
+            "PublicationYR": 1973,
+            "Goodreads_rating": 4.01
+        }
+    ]
+}
+```
+
+JSON
+-The one that work well
+```
+{
+    "library": [
+        {
+            "Book Number": [
+                1,
+                2,
+                3
+            ],
+            "Title": [
+                "Weaverbird",
+                "Merry Sexy Christmas",
+                "Sula"
+            ],
+            "Author1": [
+                "Ayọ̀bámi Adébáyọ̀",
+                "Beverly Jenkins",
+                "Toni Morrison"
+            ],
+            "Author2": [
+                "Ayodele Arigbabu",
+                "Kayla Perrin",
+                " "
+            ],
+            "Author3": [
+                "Unoma Nguemo Azuah",
+                "Maureen Smith",
+                " "
+            ],
+            "Subjects": [
+                "Nigeria,Fiction,Anthologies,Challenging,Reflective",
+                "Romance,African American Romance, Anthologies,Holiday",
+                "Fiction,Classic,Historical Fiction, African American"
+            ],
+            "PublicationYR": [
+                2013,
+                2012,
+                1973
+            ],
+            "Goodreads_rating": [
+                4,
+                4.18,
+                4.01
+            ]
+        }
+    ]
+}
+
+
+```
+
+
+
+
+
+
+
+3)
+First I am going to load a mini draft of my html script to see if it load and displays a table
+
+PACKAGES
+```{r}
+library(httr)
+library(XML)
+library(dplyr)
+```
+```{r}
+library(xml2)
+library(rvest)
+```
+
+
+```{r}
+HTMLurl <- "https://raw.githubusercontent.com/Zee-Mo/Data607/main/Assignment7_Data607_Practice_html"
+
+HTMLTABLE = read_html(HTMLurl) %>% html_table(fill = TRUE) 
+HTMLTABLE = as.data.frame(HTMLTABLE, optional = TRUE)
+HTMLTABLE
+
+```
+Instead of coming down vertical, the colmun values came out horiztonal
+Change up
+Read in Practice 2
+
+```{r}
+HTMLurl2 <- "https://raw.githubusercontent.com/Zee-Mo/Data607/main/Assignment7_Praticerun2"
+
+HTMLTABLE2 = read_html(HTMLurl2) %>% html_table(fill = TRUE) 
+HTMLTABLE2 = as.data.frame(HTMLTABLE2, optional = TRUE)
+HTMLTABLE2
+```
+
+```{r}
+theurl <- "https://raw.githubusercontent.com/Zee-Mo/Data607/main/Assign7_HTML_Script"
+
+htmlbox = read_html(theurl) %>% html_table(fill = TRUE) 
+htmlbox = as.data.frame(htmlbox, optional = TRUE)
+htmlbox
+```
+Load and read in the XML script
+```{r}
+xml.url= "https://raw.githubusercontent.com/Zee-Mo/Data607/main/Assign7_XML_script"
+xml.url = GET(xml.url)
+xml.url
+```
+
+I kept getting an error so I broke the code i half
+
+I think I see the issue
+
+```{r}
+xml.url= "https://raw.githubusercontent.com/Zee-Mo/Data607/main/Assign7_XML_script"
+xml.url = GET(xml.url)
+xml.url
+xml.table= xmlParse(xml.url, useInternal=TRUE )
+xml.table = xmlToDataFrame(xml.table)
+xml.table
+```
+
+```{r}
+#install.packages("rjson")
+library(rjson)
+```
+
+
+```{r}
+json_url= "https://raw.githubusercontent.com/Zee-Mo/Data607/main/myJsonfileforWeek7"
+json_df=fromJSON(file = json_url)
+json_df=json_df[['library']]
+json_df = as.data.frame(json_df, optional = TRUE)
+json_df
+```
+#Change the format of my code
+
+```{r}
+json_url2= "https://raw.githubusercontent.com/Zee-Mo/Data607/main/jsom_script_try2"
+json_df2=fromJSON(file = json_url2)
+json_df2=json_df2[['library']]
+json_df2 = as.data.frame(json_df2, optional = TRUE)
+json_df2
+```
+
+```{r}
+library(stringr)
+```
+
+CONCLUSION
+Are the three data frames identical?
+The format, the aesthetics are similar . The differences are seen in the class types.
+In the JSON file, Book number, PublicationYR and Rating are all dbl, while in the HTMl file Book Number and PublicationYR values are integers while Good reads rating value is a dbl. However, the XMl file is completely different and has Book Number, PublicationYR and Good reads rating as characters; they are seen as strings.
+
+Now when it comes to the written script, HTMl and XML are similar because they are broken down into a hierarchy.They have a root and sub_roots under each. 
+The JSON file was strictly category based. I did not separate the information in respective to the books but to the categories like “ 1stAuthor”, “Subject”, “PublicationYR” and etc
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
