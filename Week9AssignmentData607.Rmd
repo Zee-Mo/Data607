@@ -1,0 +1,112 @@
+---
+title: "Data607 week 9 Assignment Zainab"
+author: "Zainab.O"
+date: "2023-10-27"
+output: html_document
+---
+Assignment Description - Web APIs
+The New York Times web site provides a rich set of APIs, as described here: https://developer.nytimes.com/apis. You’ll need to start by signing up for an API key. Your task is to choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it into an R DataFrame.
+
+1) Signup for an account on nytimes site to get a API key
+2) I select Article Read API
+3) I want to see want the records say on birth rates or infertility 
+
+FIRST : LOAD LIBRAIAES
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+LIBRARIES
+```{r}
+library(httr)
+library(rjson)
+library(jsonlite)
+library(dplyr)
+library(tidyverse)
+```
+
+GET ACESS TO NYT ARTICLES
+
+```{r}
+key = 'NuD0CCleGeVby1y8vQRqCd8AyUSkIj0B'
+key
+```
+
+```{r}
+nyt_link = GET("https://api.nytimes.com/svc/search/v2/articlesearch.json?q=birth_rate&api-key=NuD0CCleGeVby1y8vQRqCd8AyUSkIj0B")
+nyt_link
+```
+```{r}
+http_error(nyt_link)
+```
+
+```{r}
+head(nyt_link)
+```
+```{r}
+summary(nyt_link)
+```
+```{r}
+#nyt_linksv2
+```
+
+
+#Content is a httr fucntion used to extract content from a request, here speifically I am extracting text(strings/characters). I used "as"  to be speific to what I want.The reason why is beacuse when I brefly veiwed the file suing head I got a lot of numbers but did not know what they are associated with
+```{r}
+nyt_linksv2= content(nyt_link, as = "text")
+```
+#Now I am attempting to put it in a dataframe and hopefully is comes out readable. 
+#1) use the fucntion JSON to read content in JSON format and convert into a strong into an Robject
+#2)as.data.frame converts an object into a data frame
+```{r}
+nyt_linkdf = nyt_linksv2 %>%
+  fromJSON() %>%
+  as.data.frame()
+```
+
+```{r}
+colnames(nyt_linkdf)
+```
+```{r}
+head(nyt_linkdf)
+```
+I have made a dataframe and it needs to be cleaned up
+
+I am going to RENAME my colmuns
+
+```{r}
+colnames(nyt_linkdf) = c("status","copyright","abstract","web_url","snippet","lead_paragraph","print_section","print_page","source", "multimedia","headline","keywords", "pub_date","document_type", "news_desk","section_name", "docs.byline" ,"type_of_material", "id","word_count","uri","meta.hits","meta.offset" , "meta.time" )
+```
+
+```{r}
+nyt_linkdf
+```
+```{r}
+nyt_linkdf2 = nyt_linkdf[,c(-1)]
+nyt_linkdf
+```
+
+```{r}
+nyt_linkdf2= nyt_linkdf %>%
+  select(-c("lead_paragraph"))
+nyt_linkdf2
+```
+```{r}
+nyt_linkdf2= nyt_linkdf %>%
+  select(-c("print_section","docs.byline","headline","lead_paragraph","multimedia","news_desk","section_name"))
+nyt_linkdf2
+```
+
+The Goas was to read in a Json file from New York Times api into Rstudio and create a R data frame. I made data frame on birth rates. I cleaned it up by eliminated columns I felt were not needed. I have 10 rows , so 10 articles on birth rates (or were ID by by the query ).
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
