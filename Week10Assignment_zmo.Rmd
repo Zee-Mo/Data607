@@ -1,0 +1,529 @@
+---
+title: "Week10Assignment_ZMO"
+author: "Zainab.O"
+date: "2023-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#The function get_sentiments() allows us to get specific sentiment lexicons with the appropriate measures for each one.
+
+```{r}
+#install.packages("afinn")
+#install.packages("bing")
+#install.packages("nrc")
+```
+#I had to download library("textdata") because I could not install afinn,bing or nrc seperately 
+```{r}
+#install.packages("textdata")
+```
+
+
+```{r}
+library(tidytext)
+
+get_sentiments("afinn")
+```
+
+
+```{r}
+get_sentiments("bing")
+```
+```{r}
+get_sentiments("nrc")
+```
+Title:Sentiment analysis with inner join
+
+
+#Let’s look at the words with a joy score from the NRC lexicon. = The ACTION.What we are doing
+#What are the most common joy words in Emma? = THE Question
+#The parts are broken down as such:                                                                                                    First, we need to take the text of the novels and convert the text to the                                    tidy format using unnest_tokens(), just as we did in Section 1.3.                              
+#     Let’s also set up some other columns to keep track of which line and chapter of the book each word comes from; we use group_by and mutate to construct   those columns.
+```{r}
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+
+tidy_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(
+    linenumber = row_number(),
+    chapter = cumsum(str_detect(text, 
+                                regex("^chapter [\\divxlc]", 
+                                      ignore_case = TRUE)))) %>%
+  ungroup() %>%
+  unnest_tokens(word, text)
+```
+WHAT IS HAPPENING
+#we chose the name word for the output column from unnest_tokens(). This is a convenient choice because the sentiment lexicons and stop word datasets have columns named word; performing inner joins and anti-joins is thus easier.
+
+
+#Now that the text is in a tidy format with one word per row, we are ready to do the sentiment analysis.
+#First, let’s use the NRC lexicon and filter() for the joy words. 
+#Next, let’s filter() the data frame with the text from the books for the words from Emma and then use inner_join() to perform the sentiment analysis.
+#What are the most common joy words in Emma? Let’s use count() from dplyr.
+
+
+```{r}
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+tidy_books %>%
+  filter(book == "Emma") %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+```
+
+#We can also examine how sentiment changes throughout each novel. We can do this with just a handful of lines that are mostly dplyr functions. 
+#First, we find a sentiment score for each word using the Bing lexicon and inner_join().
+
+#Next, we count up how many positive and negative words there are in defined sections of each book. 
+#We define an index here to keep track of where we are in the narrative; this index (using integer division) counts up sections of 80 lines of text.
+#. We then use pivot_wider() so that we have negative and positive sentiment in separate columns, and lastly calculate a net sentiment (positive - negative).
+
+```{r}
+library(tidyr)
+
+jane_austen_sentiment <- tidy_books %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(book, index = linenumber %/% 80, sentiment) %>%
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>% 
+  mutate(sentiment = positive - negative)
+```
+
+#Now we can plot these sentiment scores across the plot trajectory of each novel. 
+#Notice that we are plotting against the index on the x-axis that keeps track of narrative time in sections of text.
+
+```{r}
+library(ggplot2)
+
+ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~book, ncol = 2, scales = "free_x")
+```
+
+Title:Comparing the three sentiment dictionaries
+First, let’s use filter() to choose only the words from the one novel we are interested in.
+
+```{r}
+pride_prejudice <- tidy_books %>% 
+  filter(book == "Pride & Prejudice")
+```
+
+```{r}
+pride_prejudice
+```
+#Now, we can use inner_join() to calculate the sentiment in different ways.
+#Let’s again use integer division (%/%) to define larger sections of text that span multiple lines, 
+#and we can use the same pattern with count(), pivot_wider(), and mutate() to find the net sentiment in each of these sections of text. 
+
+```{r}
+afinn <- pride_prejudice %>% 
+  inner_join(get_sentiments("afinn")) %>% 
+  group_by(index = linenumber %/% 80) %>% 
+  summarise(sentiment = sum(value)) %>% 
+  mutate(method = "AFINN")
+
+bing_and_nrc <- bind_rows(
+  pride_prejudice %>% 
+    inner_join(get_sentiments("bing")) %>%
+    mutate(method = "Bing et al."),
+  pride_prejudice %>% 
+    inner_join(get_sentiments("nrc") %>% 
+                 filter(sentiment %in% c("positive", 
+                                         "negative"))
+    ) %>%
+    mutate(method = "NRC")) %>%
+  count(method, index = linenumber %/% 80, sentiment) %>%
+  pivot_wider(names_from = sentiment,
+              values_from = n,
+              values_fill = 0) %>% 
+  mutate(sentiment = positive - negative)
+```
+
+#We now have an estimate of the net sentiment (positive - negative) in each chunk of the novel text for each sentiment lexicon. Let’s bind them together and visualize them 
+
+```{r}
+bind_rows(afinn, 
+          bing_and_nrc) %>%
+  ggplot(aes(index, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+```
+
+Why is, for example, the result for the NRC lexicon biased so high in sentiment compared to the Bing et al. result? Let’s look briefly at how many positive and negative words are in these lexicons.
+```{r}
+get_sentiments("nrc") %>% 
+  filter(sentiment %in% c("positive", "negative")) %>% 
+  count(sentiment)
+```
+
+```{r}
+get_sentiments("bing") %>% 
+  count(sentiment)
+```
+
+Most common positive and negative words
+THE ACTION:
+analyze word counts that contribute to each sentiment.
+By implementing count() here with arguments of both word and sentiment, we find out how much each word contributed to each sentiment.
+
+```{r}
+bing_word_counts <- tidy_books %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_word_counts
+```
+#This can be shown visually, an
+
+```{r}
+bing_word_counts %>%
+  group_by(sentiment) %>%
+  slice_max(n, n = 10) %>% 
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(x = "Contribution to sentiment",
+       y = NULL)
+```
+
+WordCloud
+```{r}
+library(wordcloud)
+
+tidy_books %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+```
+```{r}
+library(reshape2)
+
+tidy_books %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("gray20", "gray80"),
+                   max.words = 100)
+```
+
+#some sentiment analysis algorithms look beyond only unigrams (i.e. single words) to try to understand the sentiment of a sentence as a whole. These algorithms try to understand that
+
+#I am not having a good day.
+
+#is a sad sentence, not a happy one
+
+ For these, we may want to tokenize text into sentences, and it makes sense to use a new name for the output column in such a case.
+
+```{r}
+p_and_p_sentences <- tibble(text = prideprejudice) %>% 
+  unnest_tokens(sentence, text, token = "sentences")
+```
+
+```{r}
+p_and_p_sentences$sentence[2]
+```
+
+#Another option in unnest_tokens() is to split into tokens using a regex pattern. We could use this, for example, to split the text of Jane Austen’s novels into a data frame by chapter.
+
+```{r}
+austen_chapters <- austen_books() %>%
+  group_by(book) %>%
+  unnest_tokens(chapter, text, token = "regex", 
+                pattern = "Chapter|CHAPTER [\\dIVXLC]") %>%
+  ungroup()
+
+austen_chapters %>% 
+  group_by(book) %>% 
+  summarise(chapters = n())
+```
+WHAT HAPPENED:
+We have recovered the correct number of chapters in each novel (plus an “extra” row for each novel title). In the austen_chapters data frame, each row corresponds to one chapter.
+
+WHAT ARE WE LOOKING:
+We can use tidy text analysis to ask questions such as what are the most negative chapters in each of Jane Austen’s novels? 
+First, let’s get the list of negative words from the Bing lexicon. Second, let’s make a data frame of how many words are in each chapter so we can normalize for the length of chapters. 
+```{r}
+bingnegative <- get_sentiments("bing") %>% 
+  filter(sentiment == "negative")
+```
+
+```{r}
+wordcounts <- tidy_books %>%
+  group_by(book, chapter) %>%
+  summarize(words = n())
+```
+
+
+
+Then, let’s find the number of negative words in each chapter and divide by the total words in each chapter. For each book, which chapter has the highest proportion of negative words?
+
+```{r}
+tidy_books %>%
+  semi_join(bingnegative) %>%
+  group_by(book, chapter) %>%
+  summarize(negativewords = n()) %>%
+  left_join(wordcounts, by = c("book", "chapter")) %>%
+  mutate(ratio = negativewords/words) %>%
+  filter(chapter != 0) %>%
+  slice_max(ratio, n = 1) %>% 
+  ungroup()
+```
+
+I want to check something out
+
+```{r}
+austen_books()
+```
+
+MY EXTENSION:
+I found a Rpackage for H.C.Anderson Fairytales and I am going to use loughran sentiments. I could not find the several other lexicons, just loughran.
+
+
+
+THE NEW CORPUS
+
+```{r}
+#install.packages("hcandersenr")
+library(hcandersenr)
+library(tidyverse)
+hca_fairytales() %>% 
+  select(book, language) %>% 
+  unique() %>% 
+  mutate(langauge = fct_relevel(language, c("English", "Spanish", "German", "Danish", "French"))) %>%
+  ggplot(aes(langauge, book)) + 
+  geom_raster(alpha = 0.3) +
+  scale_x_discrete(position = "top")
+```
+
+READ IN THE DATA
+The Book I need : English
+```{r}
+hcandersen_en
+```
+
+
+```{r}
+loughran_sentiments = get_sentiments("loughran")
+loughran_sentiments
+```
+
+```{r}
+tidy_books_ft = hcandersen_en %>%
+  group_by(book) %>%
+  mutate( 
+    linenumber = row_number()
+    
+  )%>%
+  
+  ungroup() %>%
+  unnest_tokens(word,text)
+```
+
+
+I picked Little Claus and Big Claus book beacuse 1)we are close to the holiday ,2) it is one of the longer books and 3) because the snow Queen is not apart of the english package
+
+```{r}
+Claus = tidy_books_ft %>%
+  filter(book == "Little Claus and Big Claus")
+Claus
+```
+
+```{r}
+tidy_books_ft
+```
+
+THIS ONLY GOES UP TO TINDER BOX. 
+I did take out the ungroup function, did not make a difference
+I put in line number and took it out , it does not make a difference
+Since the en version is a database, let me try two different things
+
+```{r}
+Claus = hcandersen_en %>%
+  filter(book == "Little Claus and Big Claus")
+Claus
+```
+
+
+I have to read this in using a the package hcandersenr and the Tidy data frame hca fairytales which already has three colmun: text, Book and language and filter out from there
+```{r}
+tidy_books_tales = hcandersenr::hca_fairytales() %>%
+  group_by(book) %>%
+ 
+  ungroup() %>%
+  unnest_tokens(word, text)
+
+```
+
+
+
+```{r}
+tidy_books_tales
+```
+
+```{r}
+Clausv2 = tidy_books_tales %>%
+  filter(book == "Litte Claus and big claus" ) %>%
+  filter(language == "English")
+Clausv2
+
+```
+New Story :The Tinder-box
+
+
+```{r}
+Tinder = tidy_books_tales %>% 
+  filter(book == "The tinder-box") %>% 
+  filter(language == "English")
+
+Tinder
+```
+
+
+ANALYSIS
+```{r}
+afinn_tales = Tinder %>% 
+  inner_join(get_sentiments("afinn")) %>% 
+  summarise(sentiment = sum(value)) %>% 
+  mutate(method = "AFINN")
+```
+
+```{r}
+loughran_tales = Tinder %>%
+  inner_join(get_sentiments("loughran")) %>%
+  filter(!is.na(sentiment)) %>%
+  count(sentiment, sort = TRUE)
+```
+
+```{r}
+loughran_tales
+```
+```{r}
+loughran_counts = Tinder %>%
+  inner_join(get_sentiments("loughran")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+```
+
+
+```{r}
+loughran_counts
+```
+
+
+```{r}
+loughran_counts %>%
+  group_by(sentiment) %>%
+  slice_max(n, n = 10) %>% 
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(x = "Contribution to sentiment",
+       y = NULL)
+```
+
+
+```{r}
+tidy_books_tales %>%
+  filter(book == "The tinder-box") %>% 
+  filter(language == "English") %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+```
+
+```{r}
+tidy_books_tales %>%
+  filter(book == "The tinder-box") %>% 
+  inner_join(get_sentiments("bing")) %>%
+  filter(language == "English") %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("gray20", "gray80"),
+                   max.words = 100)
+```
+
+```{r}
+afinn_txt = Tinder %>% 
+  inner_join(get_sentiments("afinn")) %>% 
+  summarise(sentiment = sum(value)) %>% 
+  mutate(method = "AFINN")
+
+bing_and_nrc_txt = bind_rows(
+  Tinder %>% 
+    inner_join(get_sentiments("bing")) %>%
+    mutate(method = "Bing et al."),
+  Tinder %>% 
+    inner_join(get_sentiments("nrc") %>% 
+                 filter(sentiment %in% c("positive", 
+                                         "negative"))
+    ) %>%
+    mutate(method = "NRC")) %>%
+  count(method, sentiment) %>%
+  pivot_wider(names_from = sentiment,
+              values_from = n,
+              values_fill = 0) %>% 
+  mutate(sentiment = positive - negative)
+```
+```{r}
+bind_rows(afinn, 
+          bing_and_nrc) %>%
+  ggplot(aes(index, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+```
+
+CONCLUSION
+
+When I first counted the sentiments, under AFINN, positive and negative sentiments were  equal in values with uncertainty coming in in second place. Thus I expected an equal amount of negative and positive words popping up at the same frequency in the visuals.  Side note when we did tally up the frequency of each word, the highest was could which was categorize as uncertainty and then out of the Top 10 words to frequently appear most were under the category positive.
+Thus I changed my theory that the visual would lean towards positive sentiment analysis.
+
+However when created the visuals to track sentiment along the storyline in all three lexicons, the story The-tinder box is predominately assessed as positive.
+## R Markdown
+
+This is an R Markdown document
+
+
+
+
+
+SOURCE
+Robinson, J. S. and D. (n.d.). 2 sentiment analysis with Tidy Data: Text mining with R. 2 Sentiment analysis with tidy data | Text Mining with R. 11/03/23.< https://www.tidytextmining.com/sentiment.html>
+
+EmilHvitfeldt. (n.d.). Emilhvitfeldt/hcandersenr: An R package for H.C. Andersens Fairy tales. GitHub.11/04/2023.<https://cran.r-project.org/web/packages/hcandersenr/hcandersenr.pdf>
+<https://github.com/EmilHvitfeldt/hcandersenr>
+
+
+https://cran.r-project.org/web/packages/hcandersenr/hcandersenr.pdf
+https://github.com/EmilHvitfeldt/hcandersenr
+https://rdrr.io/cran/hcandersenr/f/README.md
+
+
+
+
+ent. Markgfbfdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
