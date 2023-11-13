@@ -1,0 +1,126 @@
+---
+title: "Assignment for Week 11.Zainab"
+author: "Zainab.O"
+date: "2023-11-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+
+```{}
+
+Assignment 10
+Your task is to analyze an existing recommender system that you find interesting. You should:
+Perform a Scenario Design analysis as described below. Consider whether it makes sense for your selected recommender system to perform scenario design twice, once for the organization (e.g. Amazon.com) and once for the organization’s customers.
+Attempt to reverse engineer what you can about the site, from the site interface and any available information that you can find on the Internet or elsewhere.
+Include specific recommendations about how to improve the site’s recommendation capabilities going forward.
+Create your report using an R Markdown file, and create a discussion thread with a link to the GitHub repo where your Markdown file notebook resides. You are not expected to need to write code for this discussion assignment.
+Bumble
+After COVID , I became interested in the use of dating apps for more intentional dating because 1) I didn’t go out to socialize unless it was work-related or dinner with friends/family and I sought to date because I desire companionship and partnership that would lead to a long-term  and committed marriage.
+These apps are interesting because truly anyone can swipe on you, even if yours and their preferences don’t align but the apps have compatibility systems on apps Coffee Meets bagels or compatibility features like Best Bees on Bumble,where they will suggest someone for you.
+The reason I selected Bumble is because of its popularity and because it is the one platform where women must message first
+Perform a Scenario Design analysis as described below. Consider whether it makes sense for your selected recommender system to perform scenario design twice, once for the organization (e.g. Amazon.com) and once for the organization’s customers.
+Organization : I believe that Bumble has a wealth of data on behavioral actions of its user and how men-men,women-women and women interact. Bumbles says that it is “designed to challenge outdated heterosexual dating norms.” That they “ empower women to make the first move by giving them the ability to control the conversation. Beyond women making the first move, Bumble is a platform to empower all users to create safe and healthy connections.”
+However, according to the 2019 October Pew Research Survey, 45% of Americans that use Dating apps say that the experience has left them frustrated. In a time when mental health crises are spiking for men and women, businesses should ask, are they adding to the problem? I chose Bumble because  I like the fact that they have a BFF and network section to their app. However, Bumble should ask themselves if  they are projecting themselves with the current PR campaigns that are reflective of actual user experience. Are they setting people up to be disappointed?
+The User: Does Bumble’s  Best Bees really provide 4 equally great options? In my short experience, I would say no. I find it weird that this feature does not ask for dealbreakers.
+From a user experience, a scenario design is important because how can you,Bumble, offer me, a basic user, this Best Bees feature in good faith when I have to pay for advanced filters, which I choose not to, so you don’t know my deal breakers. You also don’t ask me for at least one dealbreaker. You’re passing me randoms to boost the algorithm and  to bait me to pay for features I can get for free if I increase my plan. Just tell me straight that getting a certain account will improve this feature and that this feature is not useful unless you have a certain type of bumble account.
+Just to reiterate:Bumble targets users who are usually 18 - 35 but it is open to all ages.They have a significant number of individuals in the 40-50 year age range. It is a geo-location dating/social app where you can find a romantic partner, a new friend or network. (Link: https://www.statista.com/insights/consumer/brand-profiles/3/43/bumble/united-states/#contentBox2
+)
+According to statistics, the band awareness is highest amongst Millennials and Gens and lower for Baby Boomers.
+Around 41% of user values a happy relationship.This is followed by a “good time” and “being successful”
+
+2. Attempt to reverse engineer what you can about the site, from the site interface and any available information that you can find on the Internet or elsewhere.
+They share their recommender system?
+What are the factors? User interaction?
+Device?
+Viewership?
+
+REVERSE ENGINEERING :
+To get a better feel of the app, I went through a virtual sign up for  Bumble. I reviewed  current and past users experience on forums like reddit and general research on the Bumble algorithm
+The general consensus is that there are 4-5 BIG FACTORS:
+1)Geo-location: Bumble does not work if you do not have your location on. You can not set a location. Your location has to be on and you can set the distance from 1- 100 miles radius around you.. This is where your population is set.
+Hard preferences that Bumble has to adhere to  that are factors
+2)The gender(s) you say your interested in meeting
+3)Age ( there is an option to see people 2 years out from your max and min)
+4) Your profile/ the number of swipes you get
+The signup and profile is broken down:  
+You have to put at least one photos, most user put 3-4 photos but you have to put a photo
+Everything else is optional:
+Prompts
+Education level
+Religion
+Interests
+Political leaning
+Zodiac sign
+
+Advanced filter:
+Advanced filters you have to pay to use. There is no good view on how this affects your algorithm. Logical reasoning suggests that this limits the population that sees your profile so you can skew to the top or the bottom. Statical small population are not the most representative population 
+Verified profile only
+Star sign - you usually have to pay for this filter, right now there is an option to get it for free
+Your status update(Are you a voter)
+Their height
+Do they exercise
+What is their level of education
+Do they ( the people swiping on you)
+
+
+The regular Dating algorithm
+Start off on a good foot from day one. As soon as your profile goes live, Bumble stats tracking how other interact/ react to your profile.
+Algorithm
+If you get a lot of right swipes, Bumble categorizes you as a top user. IF too many user swipe left on you, you’ll drop lower in the match queue
+**Put thought into your photos and the text of your profile before you go live in the early days.
+- TO get the Bumble algorithm to work for you, you need to give it as much accurate and useful information about yourself .Factors are :Age, location, your gender identity and your sexual preference
+The second factor: Your behavior on the app
+Every time you swipe left or right, that is another data point.These swipes tell the algorithm about how you feel about each potential match. It tell us 
+The recommender system : Best Bees : super compatible people that are picked for me
+The truth is there no not a lot of information about Bumble’s tech. Many people suggest that dating apps like Tinder and Bumble use collaborative filtering, Decision Trees and neural networks.
+Two sources state that  Bumble uses an Elo rating.
+ELO rating system
+Bumble purportedly works off the ELO rating system, a method for calculating the relative skill levels of players in zero-sum games. This Bumble algorithm is based on a number of factors, including:
+The number of people that you swiped left on
+The number of people that you swiped right on
+The number of people that swiped left on you
+The number of people that swiped right on you
+Bumble sorts users by determining who rates the most highly, particularly when others swipe right on your profile while also measuring how active you are on the platform.
+The truth is, there are NO detailed accounts about the methods( neural network , Decision trees or etc) on Bumble’s recommender system called Best Bees. I wanted to switch to another app that also uses a recommendation system, Coffee Meets Bagel. However, information on its algorithm system is more limited than Bumble. I think the only dating app that is really open about its algorithm is Tinder.
+However, there are other features to talk about that contribute to Bumble's goal of curating a safe space for women and finding romantic partners. Bumble included a Spotify feature where you can see one’s top 10 artists. They also have a Recommend A Friend option.These are features that are meant  for users to feel more connected and produce more right swipes.
+Logical reasoning deduce that since the rating is affected by the interaction of the user interaction with the public and the public interactions with the user’s profile the algorithm most likely uses Collaborative Filtering models:analyzes both user behavior and others’ behaviors( ) Uses K-nearest neighbor ( KNN) technique- Music taste, hobbies, location calculates the distance between different users-Search for neighbors= users who share similar interest in music, hobbies, activities , similar rating as a top user or bottom user. 
+Natural Language Processing is used but to prevent unseemly verbal communication from happening
+
+
+
+
+3. Include specific recommendations about how to improve the site’s recommendation capabilities going forward.
+Based off user experience on reddit and other forums
+Whether the app actually uses Machine learning is still up for debate.  I am privy to believe that the app just wants to create interactions.
+If the algorithm interacted more with the artist's choices. I think the algorithm should detect profiles with similar traits in 10+ profiles that  are swiped left by the users.They should do this to identify  such profiles and put in a maybe feature . Why?
+Since swiping left hurts people's rating, this could help improve users rating by keeping them in a category where the user know compatibility is low so they can’t be hurt by a left swipe .
+I believe another way to improve Bumble Bees compatibility feature is to only provide potential users that want a similar relationship status. So Users that want marriage should get a choice of users that also want marriage.
+
+REFERECNES:
+https://www.cnbc.com/2022/09/17/single-thirtysomething-giving-up-on-dating-apps-like-tinder-and-bumble.html
+Link: https://www.statista.com/insights/consumer/brand-profiles/3/43/bumble/united-states/#contentBox2
+Link : https://www.reddit.com/r/Bumble/comments/eo6f9j/how_to_beat_bumbles_algorithm/
+Link : https://www.reddit.com/r/Bumble/comments/63a0tp/any_insight_on_the_algorithm/
+Link : https://www.businessinsider.com/guides/tech/what-is-bumble-app
+
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
