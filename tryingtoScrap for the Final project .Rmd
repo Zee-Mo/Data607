@@ -1,0 +1,266 @@
+---
+title: "Tryingtoscrap"
+author: "Zainab.O"
+date: "2023-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+Example: Scraping from a static website
+I got from reference 1
+link:https://www.geeksforgeeks.org/scraping-a-table-on-https-site-using-r/
+
+##BIF NOTES
+# Extract the table content 
+#table_content <- html_table(table_node)[[2]] is important.When i take [[2]] out,I get all graphs from the site.When I change the number [[1]] gives me a long row of code, while [[2]] gives me  table. [[3]] gives me a row of html code and [[4]] gives me a tbale
+
+```{r}
+library(rvest) 
+  
+# Read the HTML content of the website 
+webpage <- read_html("https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(PPP)_per_capita") 
+  
+# Select the table using CSS selector 
+table_node <- html_nodes(webpage, "table") 
+  
+# Extract the table content 
+table_content <- html_table(table_node)[[2]] 
+  
+# Print the table 
+head(table_content)
+```
+
+
+```{r cars}
+library(rvest) 
+
+# Read the HTML content of the website 
+webpage <- read_html("https://www.askapatient.com/viewrating.asp?drug=18936&name=PROZAC") 
+
+# Select the table using CSS selector 
+table_node <- html_nodes(webpage, "table") 
+
+# Extract the table content 
+table_content <- html_table(table_node)[[2]]
+
+# Print the table 
+head(table_content)
+
+```
+
+
+
+
+EXAMPLE 2: Scraping fom a dynamic website
+
+```{r}
+library(rvest) 
+library(tidyverse) 
+  
+# URL of the website 
+url <- "https://www.worldometers.info/world-population//population-by-country/" 
+  
+# Read the HTML code of the page 
+html_code <- read_html(url) 
+  
+# Use the html_nodes function to extract the table 
+table_html <- html_code %>% html_nodes("table") %>% .[[1]] 
+  
+# Use the html_table function to convert the table  
+# HTML code into a data frame 
+table_df <- table_html %>% html_table() 
+  
+# Inspect the first few rows of the data frame 
+head(table_df)
+```
+
+##Once again [[1]] - this numbering system using brackts is important
+
+```{r}
+library(rvest) 
+library(tidyverse) 
+  
+# URL of the website 
+url2 <- "https://www.askapatient.com/viewrating.asp?drug=18936&name=PROZAC" 
+  
+# Read the HTML code of the page 
+html_code2 <- read_html(url2) 
+  
+# Use the html_nodes function to extract the table 
+table_html2 <- html_code2 %>% html_nodes("table") %>% .[[2]] 
+  
+# Use the html_table function to convert the table  
+# HTML code into a data frame 
+table_df2 <- table_html2 %>% html_table() 
+  
+# Inspect the first few rows of the data frame 
+head(table_df2)
+```
+
+
+Should I try to get an api??
+Reference :https://stackoverflow.com/questions/68648503/web-scraping-tables-in-r
+
+
+```{r}
+library(rvest)
+library(tidyverse)
+library(stringr)
+library(dplyr)
+
+url_data <- "https://www.immd.gov.hk/eng/stat_20220901.html"
+
+#url_data %>%
+#read_html()
+#css_selector <- "body > section:nth-child(7) > div > div > div > div > table"
+#immiTable <- url_data %>% 
+#read_html() %>% html_element(css = css_selector) %>% html_table()
+#immiTable
+```
+
+```{r}
+library(tidyverse)
+library(rvest)
+
+url <- "http://books.toscrape.com/catalogue/page-"
+pages <- paste0(url, 1:10, ".html")
+
+map_df(pages, function(i){ 
+     page <- read_html(i)
+     data.frame(title = html_nodes(page, "h3, #title") %>% html_text(),
+                price = html_nodes(page, ".price_color") %>% html_text() %>% 
+                        gsub("£", "", .),
+                rating = html_nodes(page, ".star-rating") %>% html_attrs() %>% 
+                         str_remove("star-rating") %>%
+                         str_replace_all(c("One" = "1", "Two" = "2", 
+                         "Three" = "3", "Four" = "4", "Five" = "5")) %>%  
+                          as.numeric())
+})
+```
+
+
+Example :Error in open.connection(x, "rb") : HTTP error 404 in R
+link:https://stackoverflow.com/questions/60236247/error-in-open-connectionx-rb-http-error-404-in-r
+```{r}
+library(XML)
+library(RCurl)
+library(curl) 
+library(rvest)
+library(tidyverse)
+library(dplyr)
+library(httr) 
+
+url <- "https://www.sgcarmart.com/new_cars/index.php"
+cardetails <- read_html(url)
+
+listing <- html_nodes(cardetails, "#nc_popular_car")
+popularcars <- html_nodes(listing,".link")
+
+info <- lapply(popularcars, function(h) {
+    details_url <- paste0("https://www.sgcarmart.com/new_cars/", html_attr(h,"href"))
+    details <- read_html(details_url)
+    html_text(html_node(details,".link_redbanner"))
+  })
+```
+```{r}
+str(info)
+```
+
+
+
+
+TRIED TO ADRESS THE ISSUE: When I scrape I only get the first two rows of the table
+TITLE: Trying to Webscrape an entire table using R, but only able to get the first line
+link: https://stackoverflow.com/questions/53230777/trying-to-webscrape-an-entire-table-using-r-but-only-able-to-get-the-first-line
+
+```{r}
+library(rvest)
+url <- "https://www.premierleague.com/match/38413"
+
+my_html <- read_html(url)
+
+
+tbls_ls <- my_html %>%
+  html_nodes("table") %>%
+  .[2] %>%
+  html_table(fill = TRUE)
+
+```
+```{r}
+install.packages("RSelenium")
+library(RSelenium)
+rD = rsDriver()
+library(XML)
+library(RCurl)
+shell('docker run -d -p 4445:4444 selenium/standalone-firefox')
+remDr <- remoteDriver(remoteServerAddr = "localhost", port = 4445L, browserName = "firefox")
+remDr$open()
+remDr$navigate('https://www.premierleague.com/match/38413')
+remDr$screenshot(display = TRUE, useViewer = TRUE) 
+
+# Close accept cookie
+obj_Accept_Cookie <- remDr$findElement("xpath", "/html/body/div[3]/div/div/div[1]/div[5]/button[1]")
+obj_Accept_Cookie$clickElement()
+
+remDr$executeScript("scroll(0, 5000)")
+remDr$executeScript("scroll(0, 15000)")
+
+obj_Table_Stats <- remDr$findElement("xpath", "//*[@id='mainContent']/div/section[2]/div[2]/div[2]/div[1]/div/div/ul/li[3]")
+obj_Table_Stats$clickElement()
+remDr$screenshot(display = TRUE, useViewer = TRUE) 
+
+page_Content <- remDr$getPageSource()[[1]]
+table <- readHTMLTable(page_Content)[[3]]
+table
+```
+
+
+
+## Including Plots
+
+
+```{r}
+#install.packages("devtools")
+#devtools::install_github("crubba/htmltab")
+library(htmltab)
+library(dplyr)
+library(tidyr)
+
+url <- "https://www.askapatient.com/searchresults.asp?searchField=prozac"
+url %>%
+  htmltab(6, rm_nodata_cols = F) %>%
+  .[,-1] %>%
+  replace_na(list(Notes = "", "Rating?" = "")) %>%
+  `rownames<-` (seq_len(nrow(.)))
+```
+
+
+```{r}
+library(rvest)
+
+wp_url <- "https://www.askapatient.com/viewrating.asp?drug=18936&name=PROZAC"
+
+leg <- read_html(wp_url)
+
+html_node(leg, xpath=".//table[contains(., 'Rating')]") %>%
+  html_table()
+```
+
+
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
