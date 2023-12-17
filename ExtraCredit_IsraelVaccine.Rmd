@@ -1,0 +1,152 @@
+---
+title: "ExtraCredit_IsraelVaccine"
+author: "Zainab.O"
+date: "2023-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Introduction
+
+The chart above describes August 2021 data for Israeli hospitalization (“Severe Cases”) rates for people under 50 (assume “50 and under”) and over 50, for both un-vaccinated and fully vaccinated populations.
+ACTION
+Analyze the data, and try to answer the questions posed in the spreadsheet. You’ll need some high level domain knowledge around 
+(1) Israel’s total population,
+(2) Who is eligible to receive vaccinations, and (3) What does it mean to be fully vaccinated? Please note any apparent discrepancies that you observe in your analysis.
+
+A)Create a .CSV file (or optionally, a relational database!) that includes all the information above. You’re encouraged to use a “wide” structure similar to how the information appears above, so that you can practice tidying and transformations as described below.
+
+B)Read the information from your .CSV file into R, and use tidyr and dplyr as needed to tidy and transform your data.
+
+C)Perform analysis as described in the spreadsheet and above.
+
+Your code should be in an R Markdown file, posted to rpubs.com, and should include narrative descriptions of your data cleanup work, analysis, and conclusions. Please include in your homework submission:
+• The URL to the .Rmd file in your GitHub repository. and
+• The URL for your rpubs.com web page
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+
+LOAD the DATA
+
+```{r}
+vaccination = read.csv(url("https://raw.githubusercontent.com/Zee-Mo/Data607/1b93da26f00f2f7cc65e0bf33bcf27d79dc92e62/israeli_vaccination_data_analysis_start.xlsx%20-%20Sheet1.csv"), na.strings = c("", " "))
+```
+
+
+```{r}
+head(vaccination)
+```
+
+GOING TO CREATE A NEW DATAFRAME
+```{r}
+Age = c("<50","<50",">50",">50")
+Vaccine_Status = c('Vaccinated', 'Not_Vaccinated','Vaccinated', 'Not_Vaccinated')
+Population = c((3501118),(1116834),(2133516),(186078))
+PopPercentage = c(0.730,0.233,0.904,0.079)
+Severe_Cases = c(11,43,290,171)
+
+vaccine_df = data_frame(Age,Vaccine_Status,Population,PopPercentage,Severe_Cases)
+
+head(vaccine_df)
+```
+Do you have enough information to calculate the population? What does this total population represent?
+
+We have numbers and what percentage they represent, but I don’t believe that’d be total population for Israel. Let’s double check that though.
+
+```{r}
+Q1A = vaccine_df$Population[1]/vaccine_df$PopPercentage[1]
+print(Q1A)
+
+Q1B = vaccine_df$Population[2]/vaccine_df$PopPercentage[2]
+print(Q1B)
+
+Q1=Q1A+Q1B
+
+print(paste0("The total population of Vaccinated and Not Vaccinated is ",Q1A, 'and',Q1B,'respectively and together is ', Q1))
+```
+
+Answer : I calculated Around 9.5 million people, which is around the 9.45 million people in Israel I saw in my research. 
+
+However, there are a couple problems. The way the data is written suggest I have data for those above 50 years old age and data for those below 50 years of age but what about those that are 50 years old.
+The original data also excludes those age 12 and below so once again data is missing. 
+Then there is the subjectivity and uncertainty of what is Morris definition of vaccinated. Clinically speaking, you are vaccinated once you received all your shots. This is unclear here.
+
+I would say I am unsure of whether I have calculated and am represnting the total population in my data.
+of
+Question 2: Calculate the Efficacy vs. Severe Disease
+
+Here is how to calculate for efficacy: 1- (Percent fully vaxed severe cases/ percent not vaxed severe cases )
+
+Looking at the table efficacy is different for those above 50 years vs those below 50 years old.
+
+
+```{r}
+below_threshold = 1 - ((vaccine_df$Severe_Cases[1]/100000)/(vaccine_df$Severe_Cases[2]/100000))
+above_threshold = 1 - ((vaccine_df$Severe_Cases[3]/100000)/(vaccine_df$Severe_Cases[4]/100000))
+
+print(paste0(below_threshold))
+print(paste0(above_threshold))
+```
+
+```{r}
+print(paste0("Efficacy for those to below 50 years of age is ", (below_threshold * 100)))
+print(paste0("Efficacy for those to above 50 years of age is ", (above_threshold * 100)))
+```
+ For those that are 50 years old and above the vaccine appears to fail at being effective.This implies that at that age there are factors that make them  more susceptible to disease and work reduce power the vaccine. Those that are above below 50 years old;its implied the vaccine is  75% effective, thus they are less likely to experience against severe cases.
+ 
+ 
+ Question 3: From your calculation of efficacy vs. disease, are you able to compare the rate of severe cases in unvaccinated individuals to that in vaccinated individuals?
+ Yes. The difference in the rate of severe cases across the two age groups was calculated in Question 2 above. If I were to calculate  without regard for age, the results would be dominated by the much higher number of observations for the over 50 years of age group and would result in a negative ‘Efficacy vs. Disease’ index
+ 
+
+
+```{r}
+#file.choose()
+```
+
+```{r}
+#file.choose()
+```
+
+DID NOT WORK
+```{r}
+library(readxl)
+#vaccines = read_xls("/Users/z.m.oketokoun/Data607/israeli_vaccination_data_analysis_start.xlsx")
+
+#vaccines
+```
+DID NOT WORK
+```{r}
+#vax = download.file("https://github.com/Zee-Mo/Data607/blob/main/israeli_vaccination_data_analysis_start.xlsx", destfile = "/Users/z.m.oketokoun/Data607/israeli_vaccination_data_analysis_start.xlsx")
+
+#israel_vax = read_excel("/Users/z.m.oketokoun/Data607/israeli_vaccination_data_analysis_start.xlsx",  sheet = "israeli_vaccination_data_analysis_start.xlsx", na= "n/a")
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
